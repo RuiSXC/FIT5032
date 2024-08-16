@@ -11,9 +11,11 @@
                 type="text"
                 class="form-control"
                 id="username"
-                required
                 v-model="formData.username"
+                @blur="() => validateName(true)"
+                @input="() => validateName(false)"
               />
+              <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
             </div>
             <div class="col-md-6 col-sm-6">
               <label for="password" class="form-label">Password</label>
@@ -21,11 +23,19 @@
                 type="password"
                 class="form-control"
                 id="password"
-                required
-                minlength="4"
-                maxlength="10"
                 v-model="formData.password"
+                @blur="
+                  () => {
+                    validatePassword(true)
+                  }
+                "
+                @input="
+                  () => {
+                    validatePassword(false)
+                  }
+                "
               />
+              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
             </div>
           </div>
           <div class="row mb-3">
@@ -35,9 +45,9 @@
                   type="radio"
                   class="form-check-input"
                   id="isAustralian"
-                  required
                   name="australian"
                   v-model="formData.isAustralian"
+                  @change="validateResident"
                 />
                 <label class="form-check-label" for="isAustralian"> Australian Resident</label>
               </div>
@@ -48,19 +58,26 @@
                   class="form-check-input"
                   id="notAustralian"
                   name="australian"
-                  required
                   v-model="formData.notAustralian"
+                  @change="validateResident"
                 />
-                <label class="form-check-label" for="isAustralian">Not Australian Resident</label>
+                <label class="form-check-label" for="notAustralian">Not Australian Resident</label>
               </div>
+              <div v-if="errors.resident" class="text-danger">{{ errors.resident }}</div>
             </div>
             <div class="col-md-6 col-sm-6">
               <label for="gender" class="form-label">Gender</label>
-              <select id="gender" class="form-select" required v-model="formData.gender">
+              <select
+                id="gender"
+                class="form-select"
+                v-model="formData.gender"
+                @change="validateGender"
+              >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
               </select>
+              <div v-if="errors.gender" class="text-danger">{{ errors.gender }}</div>
             </div>
           </div>
           <div class="mb-3">
@@ -69,9 +86,10 @@
               class="form-control"
               id="reason"
               rows="3"
-              required
               v-model="formData.reason"
+              @change="validateReason"
             ></textarea>
+            <div v-if="errors.reason" class="text-danger">{{ errors.reason }}</div>
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary me-2">Submit</button>
@@ -120,9 +138,103 @@ const formData = ref({
 const submittedCards = ref([])
 
 const submitForm = () => {
-  submittedCards.value.push({
-    ...formData.value
-  })
+  validateName(true)
+  validatePassword(true)
+  validateResident()
+  validateGender()
+  validateReason()
+  if (
+    !errors.value.username &&
+    !errors.value.password &&
+    !errors.value.resident &&
+    !errors.value.gender &&
+    !errors.value.reason
+  ) {
+    submittedCards.value.push({ ...formData.value })
+    clearForm()
+  }
+}
+
+const clearForm = () => {
+  formData.value = {
+    username: '',
+    password: '',
+    isAustralian: false,
+    notAustralian: false,
+    reason: '',
+    gender: ''
+  }
+}
+
+const errors = ref({
+  username: null,
+  password: null,
+  resident: null,
+  gender: null,
+  reason: null
+})
+
+const validateName = (blur) => {
+  if (formData.value.username.length < 3) {
+    if (blur) errors.value.username = 'Name must be at least 3 characters'
+  } else {
+    errors.value.username = null
+  }
+}
+
+const validatePassword = (blur) => {
+  const password = formData.value.password
+  const minLength = 8
+  const hasUppercase = /[A-Z]/.test(password)
+  const hasLowercase = /[a-z]/.test(password)
+  const hasNumber = /\d/.test(password)
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+  if (password.length < minLength) {
+    if (blur) {
+      errors.value.password = `Password must be at least ${minLength} characters long.`
+    }
+  } else if (!hasUppercase) {
+    if (blur) {
+      errors.value.password = 'Password must contain at least one uppercase letter.'
+    }
+  } else if (!hasLowercase) {
+    if (blur) {
+      errors.value.password = 'Password must contain at least one lowercase letter.'
+    }
+  } else if (!hasNumber) {
+    if (blur) {
+      errors.value.password = 'Password must contain at least one number.'
+    }
+  } else if (!hasSpecialChar) {
+    errors.value.password = 'Password must contain at least one special character.'
+  } else {
+    errors.value.password = null
+  }
+}
+
+const validateResident = () => {
+  if (!formData.value.isAustralian && !formData.value.notAustralian) {
+    errors.value.resident = 'Please select one of the option'
+  } else {
+    errors.value.resident = null
+  }
+}
+
+const validateGender = () => {
+  if (!formData.value.gender) {
+    errors.value.gender = 'Please select one of the option.'
+  } else {
+    errors.value.gender = null
+  }
+}
+
+const validateReason = () => {
+  if (!formData.value.reason) {
+    errors.value.reason = 'Please input the reason.'
+  } else {
+    errors.value.reason = null
+  }
 }
 </script>
 
