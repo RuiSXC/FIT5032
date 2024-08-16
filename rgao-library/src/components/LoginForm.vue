@@ -7,7 +7,13 @@
           <div class="row mb-3">
             <div class="col-md-6 col-sm-6">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" v-model="formData.username" />
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                required
+                v-model="formData.username"
+              />
             </div>
             <div class="col-md-6 col-sm-6">
               <label for="password" class="form-label">Password</label>
@@ -15,6 +21,9 @@
                 type="password"
                 class="form-control"
                 id="password"
+                required
+                minlength="4"
+                maxlength="10"
                 v-model="formData.password"
               />
             </div>
@@ -23,17 +32,31 @@
             <div class="col-md-6 col-sm-6">
               <div class="form-check">
                 <input
-                  type="checkbox"
+                  type="radio"
                   class="form-check-input"
                   id="isAustralian"
+                  required
+                  name="australian"
                   v-model="formData.isAustralian"
                 />
-                <label class="form-check-label" for="isAustralian"> Australian Resident?</label>
+                <label class="form-check-label" for="isAustralian"> Australian Resident</label>
+              </div>
+
+              <div class="form-check">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  id="notAustralian"
+                  name="australian"
+                  required
+                  v-model="formData.notAustralian"
+                />
+                <label class="form-check-label" for="isAustralian">Not Australian Resident</label>
               </div>
             </div>
             <div class="col-md-6 col-sm-6">
               <label for="gender" class="form-label">Gender</label>
-              <select id="gender" class="form-select" v-model="formData.gender">
+              <select id="gender" class="form-select" required v-model="formData.gender">
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
@@ -46,6 +69,7 @@
               class="form-control"
               id="reason"
               rows="3"
+              required
               v-model="formData.reason"
             ></textarea>
           </div>
@@ -88,6 +112,7 @@ const formData = ref({
   username: '',
   password: '',
   isAustralian: false,
+  notAustralian: false,
   reason: '',
   gender: ''
 })
