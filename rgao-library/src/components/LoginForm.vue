@@ -47,6 +47,7 @@
                   id="isAustralian"
                   name="australian"
                   v-model="formData.isAustralian"
+                  value="Yes"
                   @change="validateResident"
                 />
                 <label class="form-check-label" for="isAustralian"> Australian Resident</label>
@@ -58,7 +59,8 @@
                   class="form-check-input"
                   id="notAustralian"
                   name="australian"
-                  v-model="formData.notAustralian"
+                  v-model="formData.isAustralian"
+                  value="No"
                   @change="validateResident"
                 />
                 <label class="form-check-label" for="notAustralian">Not Australian Resident</label>
@@ -99,7 +101,7 @@
       </div>
     </div>
 
-    <div class="row mt-5" v-if="submittedCards.length">
+    <!-- <div class="row mt-5" v-if="submittedCards.length">
       <div class="d-flex flex-wrap justify-content-start">
         <div
           v-for="(card, index) in submittedCards"
@@ -119,6 +121,25 @@
           </ul>
         </div>
       </div>
+    </div> -->
+
+    <!-- 
+    username: '',
+    password: '',
+    isAustralian: false,
+    notAustralian: false,
+    reason: '',
+    gender: ''    
+-->
+
+    <div class="card">
+      <DataTable :value="submittedCards" tableStyle="min-width: 50rem">
+        <Column field="username" header="Username"></Column>
+        <Column field="password" header="Password"></Column>
+        <Column field="isAustralian" header="Australian Resident"></Column>
+        <Column field="gender" header="Gender"></Column>
+        <Column field="reason" header="Reason"></Column>
+      </DataTable>
     </div>
   </div>
 </template>
@@ -126,11 +147,18 @@
 <script setup>
 import { ref } from 'vue'
 
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+// import { onMounted } from 'vue'
+
+// onMounted(() => {
+//   ProductService.getProductsMini().then((data) => (submittedCards.value = data))
+// })
+
 const formData = ref({
   username: '',
   password: '',
   isAustralian: false,
-  notAustralian: false,
   reason: '',
   gender: ''
 })
