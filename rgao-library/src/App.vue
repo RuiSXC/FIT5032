@@ -10,7 +10,6 @@ import BHeader from './components/BHeader.vue'
     <header>
       <BHeader />
     </header>
-
     <main class="main-box">
       <RouterView></RouterView>
     </main>
@@ -18,4 +17,5 @@ import BHeader from './components/BHeader.vue'
   <!-- <Json /> -->
   <!-- <LoginForm /> -->
   <!-- <HomeView /> -->
+
 </template>
