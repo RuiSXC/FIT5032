@@ -1,37 +1,58 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
-// import AboutView from '../views/AboutView.vue'
-// import LoginView from '@/views/LoginView.vue'
-// import AccessDenied from '@/views/AccessDenied.vue'
+import HomeView from '../views/HomeView.vue'
+import AboutView from '../views/AboutView.vue'
+import AccessDenied from '@/views/AccessDenied.vue'
 import FirebaseSignin from '@/views/FirebaseSignin.vue'
+import FirebaseRegister from '@/views/FirebaseRegister.vue'
+import AddBookView from '@/views/AddBookView.vue'
+import EditBookView from '@/views/EditBookView.vue'
+// import LoginView from '@/views/LoginView.vue'
 
 const routes = [
   {
     path: '/firelogin',
     name: 'FireLogin',
     component: FirebaseSignin
+  },
+  {
+    path: '/fireregister',
+    name: 'FireRegister',
+    component: FirebaseRegister
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: HomeView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/addbook',
+    name: 'AddBook',
+    component: AddBookView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/editbook',
+    name: 'EditBook',
+    component: EditBookView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: AboutView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/access-denied',
+    name: 'AccessDenied',
+    component: AccessDenied
   }
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   component: AboutView,
-  //   meta: { requiresAuth: true }
-  // },
   // {
   //   path: '/login',
   //   name: 'Login',
   //   component: LoginView
   // },
-  // {
-  //   path: '/access-denied',
-  //   name: 'AccessDenied',
-  //   component: AccessDenied
-  // }
 ]
 
 const router = createRouter({
@@ -40,9 +61,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated')
-  if (to.meta?.requiresAuth && !isAuthenticated) {
-    next('/access-denied')
+  if (to.meta?.requiresAuth && localStorage.getItem('user') === null) {
+      next('/access-denied')
   } else {
     next()
   }
