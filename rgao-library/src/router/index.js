@@ -6,6 +6,10 @@ import FirebaseSignin from '@/views/FirebaseSignin.vue'
 import FirebaseRegister from '@/views/FirebaseRegister.vue'
 import AddBookView from '@/views/AddBookView.vue'
 import EditBookView from '@/views/EditBookView.vue'
+import GetBookCountView from '@/views/GetBookCountView.vue'
+import WeatherView from '@/views/WeatherView.vue'
+import GetAllBookAPI from '@/views/GetAllBookAPI.vue'
+import CountBookAPI from '@/views/CountBookAPI.vue'
 // import LoginView from '@/views/LoginView.vue'
 
 const routes = [
@@ -32,9 +36,33 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/GetBookCount',
+    name: 'GetBookCount',
+    component: GetBookCountView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/CountBookAPI',
+    name: 'CountBookAPI',
+    component: CountBookAPI,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/GetAllBookAPI',
+    name: 'GetAllBookAPI',
+    component: GetAllBookAPI,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/editbook',
     name: 'EditBook',
     component: EditBookView,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/WeatherCheck',
+    name: 'WeatherCheck',
+    component: WeatherView,
     meta: { requiresAuth: true }
   },
   {
@@ -62,7 +90,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta?.requiresAuth && localStorage.getItem('user') === null) {
-      next('/access-denied')
+    next('/access-denied')
   } else {
     next()
   }

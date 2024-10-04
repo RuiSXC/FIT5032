@@ -6,11 +6,13 @@
                     <h1 class="text-center py-4">Create an Account</h1>
                     <div class="form-group mb-3">
                         <label for="email">Email address</label>
-                        <input v-model="email" id="email" type="email"  class="form-control"  placeholder="Enter email" required>
+                        <input v-model="email" id="email" type="email" class="form-control" placeholder="Enter email"
+                            required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="password">Email address</label>
-                        <input v-model="password" id="password" type="password" class="form-control" placeholder="Password" required>
+                        <input v-model="password" id="password" type="password" class="form-control"
+                            placeholder="Password" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="role">Role: </label>
@@ -45,17 +47,18 @@ const register = () => {
     createUserWithEmailAndPassword(auth, email.value, password.value)
         .then(async (userCredential) => {
             const user = userCredential.user;
-    
+
             // save user data to Firestore
             await setDoc(doc(db, 'users', user.uid), {
                 email: user.email,
                 role: role.value
             });
 
+            alert("User created successfully");
             router.push("/FireLogin")
         }).catch((error) => {
             console.log(error)
-            if(error.code ==='auth/email-already-in-use') {
+            if (error.code === 'auth/email-already-in-use') {
                 alert('Email already in use')
             } else {
                 alert(error.message);

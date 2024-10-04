@@ -8,7 +8,7 @@
 
                             <h2 class="text-center mb-4">Access Denied</h2>
                             <p>You need to be logged in to access this page.</p>
-                            <router-link to="/login">Go to Login</router-link>
+                            <router-link to="/firelogin">Go to Login</router-link>
                         </div>
                     </div>
                 </div>
