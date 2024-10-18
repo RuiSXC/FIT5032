@@ -12,6 +12,8 @@ import GetAllBookAPI from '@/views/GetAllBookAPI.vue'
 import CountBookAPI from '@/views/CountBookAPI.vue'
 // import LoginView from '@/views/LoginView.vue'
 
+
+
 const routes = [
   {
     path: '/firelogin',
@@ -88,6 +90,11 @@ const router = createRouter({
   routes
 })
 
+
+
+
+
+
 router.beforeEach((to, from, next) => {
   if (to.meta?.requiresAuth && localStorage.getItem('user') === null) {
     next('/access-denied')
@@ -95,5 +102,7 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+
+
 
 export default router
